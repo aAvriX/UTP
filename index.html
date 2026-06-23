@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b50:#F3EFFE;--b100:#D9C8FC;--b200:#BFA1F9;
+  --b400:#8B5CF6;--b600:#6D28D9;--b800:#4C1D95;--b900:#2E1065;
+  --g50:#EAF3DE;--g100:#C0DD97;--g600:#3B6D11;--g800:#27500A;
+  --a50:#FAEEDA;--a100:#FAC775;--a600:#854F0B;--a800:#633806;
+  --r50:#FCEBEB;--r100:#F7C1C1;--r600:#A32D2D;
+  --color-background-primary:#fff;--color-background-secondary:#f5f5f5;
+  --color-text-primary:#1a1a1a;--color-text-secondary:#666;
+  --color-border-tertiary:#e0e0e0;--color-border-secondary:#ccc;
+  --border-radius-lg:10px;--border-radius-md:6px;
+  --font-sans:system-ui,-apple-system,sans-serif;
+}
+#root{font-family:var(--font-sans);background:var(--b50);min-height:620px}
+.screen{display:none}.screen.active{display:block}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:620px;background:var(--b50)}
+.login-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:32px 28px;width:340px}
+.login-logo{text-align:center;margin-bottom:20px}
+.login-logo i{font-size:36px;color:var(--b600)}
+.login-logo h1{font-size:20px;font-weight:500;color:var(--b800);margin-top:6px}
+.login-logo p{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.role-tabs{display:flex;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden;margin-bottom:16px}
+.role-tab{flex:1;padding:8px;text-align:center;font-size:13px;cursor:pointer;color:var(--color-text-secondary);background:var(--color-background-secondary)}
+.role-tab.active{background:var(--b600);color:#fff;font-weight:500}
+.form-row{margin-bottom:12px}
+.form-row label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+.form-row input,.form-row select,.form-row textarea{width:100%;padding:8px 10px;font-size:13px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;outline:none}
+.btn-full{width:100%;padding:10px;background:var(--b600);color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;margin-top:4px}
+.btn-full:hover{background:var(--b800)}
+.login-hint{margin-top:14px;background:var(--b50);border-radius:var(--border-radius-md);padding:10px 12px;font-size:11px;color:var(--b800)}
+.login-hint strong{display:block;margin-bottom:4px;font-size:12px}
+.login-hint div{margin-bottom:2px}
+.err-msg{font-size:12px;color:var(--r600);text-align:center;margin-top:8px;min-height:16px}
+.topbar{background:var(--b800);padding:11px 18px;display:flex;align-items:center;gap:10px;color:#fff}
+.topbar .logo{font-size:16px;font-weight:500;color:#fff}
+.topbar .logo span{color:var(--b200)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.user-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 4px;font-size:12px;color:#fff}
+.user-pill .av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500}
+.av-doc{background:var(--b200);color:var(--b800)}
+.av-stu{background:var(--g100);color:var(--g800)}
+.badge-role{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge-doc{background:var(--b100);color:var(--b800)}
+.badge-stu{background:var(--g50);color:var(--g800)}
+.btn-logout{background:rgba(255,255,255,.15);border:0.5px solid rgba(255,255,255,.25);color:#fff;padding:5px 10px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.layout{display:flex;min-height:570px}
+.sidebar{width:215px;background:var(--b900);padding:14px 0;flex-shrink:0}
+.sid-label{font-size:10px;font-weight:500;color:var(--b200);letter-spacing:1px;padding:8px 14px 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;color:rgba(255,255,255,.65);font-size:13px;transition:background .12s}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(139,92,246,.3);color:#fff;border-left:3px solid var(--b400)}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-course{padding:7px 14px 7px 28px;font-size:12px}
+.nav-divider{height:0.5px;background:rgba(255,255,255,.08);margin:6px 0}
+.main{flex:1;padding:18px;overflow:auto}
+.page{display:none}.page.active{display:block}
+.page-hdr{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.page-hdr h1{font-size:18px;font-weight:500;color:var(--b900)}
+.page-hdr p{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.stat-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px}
+.stat-card .sl{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.4px}
+.stat-card .sv{font-size:22px;font-weight:500;color:var(--b800);margin-top:3px}
+.stat-card i{font-size:18px;color:var(--b400);margin-bottom:6px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:12px}
+.card-hdr{display:flex;align-items:center;gap:10px;cursor:pointer}
+.course-badge{width:38px;height:38px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cb-fis{background:#EDE9FE}.cb-cal{background:#DDD6FE}.cb-dla{background:#E9D5FF}.cb-qui{background:#F3E8FF}
+.card-title{font-size:14px;font-weight:500;color:var(--b800)}
+.card-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.chevron{margin-left:auto;font-size:15px;color:var(--color-text-secondary);transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+.card-body{display:none;border-top:0.5px solid var(--color-border-tertiary);margin-top:12px;padding-top:12px}
+.card-body.open{display:block}
+.session-row{background:var(--b50);border:0.5px solid var(--b100);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.sess-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer}
+.sess-hdr:hover{background:rgba(139,92,246,.06)}
+.sess-num{background:var(--b600);color:#fff;font-size:10px;font-weight:500;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sess-title{font-size:13px;font-weight:500;color:var(--b800)}
+.sess-body{display:none;padding:10px 12px;background:var(--color-background-primary);border-top:0.5px solid var(--b100)}
+.sess-body.open{display:block}
+.files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:8px;margin-bottom:10px}
+.file-card{background:var(--b50);border:0.5px solid var(--b100);border-radius:var(--border-radius-md);padding:8px 10px;text-align:center;cursor:pointer}
+.file-card:hover{background:var(--b100)}
+.file-card i{font-size:22px;display:block;margin-bottom:4px}
+.fi-pdf{color:#E24B4A}.fi-doc{color:#185FA5}.fi-img{color:#1D9E75}.fi-vid{color:#BA7517}.fi-link{color:var(--b600)}
+.file-card .fn{font-size:11px;color:var(--color-text-secondary);word-break:break-word}
+.file-card .ft{font-size:10px;color:var(--color-text-secondary);text-transform:uppercase;margin-top:2px}
+.deadline-box{display:flex;align-items:center;gap:8px;background:var(--a50);border:0.5px solid var(--a100);border-radius:var(--border-radius-md);padding:8px 12px;margin-bottom:10px}
+.deadline-box i{font-size:16px;color:var(--a600)}
+.deadline-box .dl-text{font-size:12px;color:var(--a800)}
+.deadline-box input[type=date]{font-size:12px;border:0.5px solid var(--a100);border-radius:var(--border-radius-md);padding:4px 8px;background:var(--color-background-primary);color:var(--color-text-primary);margin-left:auto}
+.student-uploads{background:var(--g50);border:0.5px solid var(--g100);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:10px}
+.student-uploads h4{font-size:12px;font-weight:500;color:var(--g800);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sub-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--g100);font-size:12px;color:var(--color-text-primary)}
+.sub-row:last-child{border-bottom:none}
+.sub-av{width:22px;height:22px;border-radius:50%;background:var(--g100);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--g800);flex-shrink:0}
+.sub-date{margin-left:auto;font-size:10px;color:var(--color-text-secondary)}
+.sub-badge{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--g50);color:var(--g600)}
+.upload-zone{border:1.5px dashed var(--b200);border-radius:var(--border-radius-md);padding:14px;text-align:center;cursor:pointer;position:relative;background:var(--b50)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone i{font-size:24px;color:var(--b400);margin-bottom:4px}
+.upload-zone p{font-size:12px;color:var(--color-text-secondary)}
+.prog-wrap{display:none;margin-top:8px;background:var(--b50);border-radius:var(--border-radius-md);padding:8px 10px}
+.prog-bar{height:5px;background:var(--b100);border-radius:3px;margin-top:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--b400);width:0%;transition:width .35s}
+.btn-sm{font-size:12px;padding:6px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.btn-sm:hover{background:var(--color-background-secondary)}
+.btn-blue{background:var(--b600);color:#fff;border-color:var(--b600)}
+.btn-blue:hover{background:var(--b800)}
+.btn-danger{color:var(--r600);border-color:var(--r100)}
+.btn-danger:hover{background:var(--r50)}
+.modal-bg{display:none;min-height:400px;background:rgba(0,0,0,.42);align-items:center;justify-content:center;position:relative;z-index:10;margin:-18px;padding:30px 18px}
+.modal-bg.open{display:flex}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:22px;width:380px;max-width:100%}
+.modal h2{font-size:15px;font-weight:500;color:var(--b800);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.done-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--g50);color:var(--g800)}
+.pending-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--a50);color:var(--a800)}
+.users-table{width:100%;border-collapse:collapse;font-size:13px}
+.users-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);text-transform:uppercase;letter-spacing:.4px}
+.users-table td{padding:9px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.users-table tr:last-child td{border-bottom:none}
+.toast{position:absolute;bottom:16px;right:16px;background:var(--b800);color:#fff;padding:9px 14px;border-radius:var(--border-radius-md);font-size:12px;z-index:200;display:none;align-items:center;gap:7px}
+.toast.show{display:flex}
+</style>
+</head>
+<body>
+<div id="root">
+<div class="screen active" id="scr-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <center><img src="https://utp.ac.pa/sites/default/files/documentos/2024/imagen/6_logo_utp_-_rgb_oficial.png" alt="200" height="150"></center>
+       
+        <p>Universidad Tecnológica de Panamá</p>
+      </div>
+      <div class="role-tabs">
+        <div class="role-tab active" id="tab-doc" onclick="setRole('docente')"><i class="ti ti-chalkboard" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Administrador</div>
+        <div class="role-tab" id="tab-stu" onclick="setRole('alumno')"><i class="ti ti-user-graduate" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Alumno</div>
+      </div>
+      <div class="form-row"><label>Correo electrónico</label><input type="email" id="li-email" placeholder="correo@utp.pa" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="form-row"><label>Contraseña</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn-full" onclick="doLogin()">Ingresar</button>
+      <div class="err-msg" id="login-err"></div>
+      <div class="login-hint"><strong>Cuentas de prueba:</strong><div id="hint-content"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="scr-app">
+  <div class="topbar">
+    
+    <span class="logo"><img src="https://utp.ac.pa/sites/default/files/documentos/2024/imagen/6_logo_utp_-_rgb_oficial.png" alt="50" height="50"></span>
+    <div class="topbar-right">
+      <div class="user-pill">
+        <div class="av" id="top-av"></div>
+        <span id="top-name"></span>
+        <span class="badge-role" id="top-badge"></span>
+      </div>
+      <button class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i>Salir</button>
+    </div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sid-label">Menú</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Panel</div>
+      <div class="nav-item" id="nav-courses" onclick="showPage('courses',this)"><i class="ti ti-book"></i>Cursos</div>
+      <div class="nav-item" id="nav-tasks" onclick="showPage('tasks',this)"><i class="ti ti-clipboard-check"></i><span id="nav-tasks-label">Tareas</span></div>
+      <div class="nav-divider"></div>
+      <div class="sid-label">Mis cursos</div>
+      <div id="sidebar-courses"></div>
+      <div class="nav-divider"></div>
+      <div class="nav-item doc-only" id="nav-users" onclick="showPage('users',this)"><i class="ti ti-users"></i>Alumnos</div>
+      <div class="nav-item doc-only" id="nav-submissions" onclick="showPage('submissions',this)"><i class="ti ti-inbox"></i>Entregas</div>
+    </div>
+    <div class="main" id="main-area">
+      <div class="page active" id="page-dashboard">
+        <div class="page-hdr"><div><h1 id="dash-greeting">Bienvenido</h1><p id="dash-sub"></p></div></div>
+        <div class="stat-grid" id="dash-stats"></div>
+        <div class="card">
+          <div style="font-size:14px;font-weight:500;color:var(--b800);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+            <i class="ti ti-bell" style="font-size:16px;color:var(--b400)"></i>Actividad reciente
+          </div>
+          <div id="dash-activity"></div>
+        </div>
+      </div>
+      <div class="page" id="page-courses">
+        <div class="page-hdr">
+          <div><h1>Cursos</h1><p id="courses-sub"></p></div>
+          <div id="doc-add-course-btn" style="margin-left:auto"></div>
+        </div>
+        <div id="courses-list"></div>
+      </div>
+      <div class="page" id="page-tasks">
+        <div class="page-hdr"><div><h1 id="tasks-title">Tareas</h1><p id="tasks-sub"></p></div></div>
+        <div id="tasks-content"></div>
+      </div>
+      <div class="page" id="page-users">
+        <div class="page-hdr">
+          <div><h1>Alumnos registrados</h1><p>Gestiona las cuentas de tus estudiantes</p></div>
+          <button class="btn-sm btn-blue" onclick="openModal('addUser')" style="margin-left:auto"><i class="ti ti-user-plus"></i>Agregar alumno</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden"><table class="users-table" id="users-table"></table></div>
+      </div>
+      <div class="page" id="page-submissions">
+        <div class="page-hdr"><div><h1>Entregas de alumnos</h1><p>Todos los trabajos recibidos</p></div></div>
+        <div id="all-submissions"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="modal-addCourse">
+    <div class="modal">
+      <h2><i class="ti ti-book-2" style="color:var(--b400)"></i>Nuevo curso</h2>
+      <div class="form-row"><label>Nombre del curso</label><input id="nc-name" placeholder="Ej: Matemática"></div>
+      <div class="form-row"><label>Descripción</label><input id="nc-desc" placeholder="Descripción breve"></div>
+      <div class="form-row"><label>Ícono</label>
+        <select id="nc-icon">
+          <option value="fis">⚛ Física</option><option value="cal">📐 Cálculo</option>
+          <option value="dla">💻 Desarrollo Lógico</option><option value="qui">🧪 Química</option>
+          <option value="gen">📚 General</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-sm" onclick="closeModal('addCourse')">Cancelar</button>
+        <button class="btn-sm btn-blue" onclick="addCourse()"><i class="ti ti-plus"></i>Crear</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-bg" id="modal-addSession">
+    <div class="modal">
+      <h2><i class="ti ti-notes" style="color:var(--b400)"></i>Nueva sesión</h2>
+      <div class="form-row"><label>Título de la sesión</label><input id="ns-name" placeholder="Ej: Cinemática, Límites..."></div>
+      <div class="form-row"><label>Descripción (opcional)</label><input id="ns-desc" placeholder="Temas a cubrir"></div>
+      <div class="form-row"><label>Fecha de entrega</label><input type="date" id="ns-due"></div>
+      <input type="hidden" id="ns-cid">
+      <div class="modal-actions">
+        <button class="btn-sm" onclick="closeModal('addSession')">Cancelar</button>
+        <button class="btn-sm btn-blue" onclick="addSession()"><i class="ti ti-plus"></i>Crear sesión</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-bg" id="modal-upload-doc">
+    <div class="modal">
+      <h2><i class="ti ti-upload" style="color:var(--b400)"></i>Subir material docente</h2>
+      <div class="form-row"><label>Nombre del material</label><input id="uld-name" placeholder="Nombre del documento"></div>
+      <div class="form-row"><label>Tipo</label>
+        <select id="uld-type"><option value="pdf">PDF</option><option value="doc">Word</option><option value="img">Imagen</option><option value="vid">Video</option><option value="link">Enlace externo</option></select>
+      </div>
+      <div class="form-row">
+        <div class="upload-zone"><input type="file" onchange="if(this.files[0]&&!document.getElementById('uld-name').value)document.getElementById('uld-name').value=this.files[0].name.replace(/\.[^.]+$/,'')">
+        <i class="ti ti-cloud-upload"></i><p>Seleccionar archivo</p></div>
+        <div class="prog-wrap" id="uld-prog"><span style="font-size:11px;color:var(--b800)">Subiendo...</span><div class="prog-bar"><div class="prog-fill" id="uld-fill"></div></div></div>
+      </div>
+      <input type="hidden" id="uld-cid"><input type="hidden" id="uld-sid">
+      <div class="modal-actions">
+        <button class="btn-sm" onclick="closeModal('upload-doc')">Cancelar</button>
+        <button class="btn-sm btn-blue" onclick="uploadDocMaterial()"><i class="ti ti-upload"></i>Subir</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-bg" id="modal-upload-stu">
+    <div class="modal">
+      <h2><i class="ti ti-send" style="color:var(--b400)"></i>Entregar tarea</h2>
+      <div class="form-row"><label>Nombre del archivo</label><input id="uls-name" placeholder="Mi tarea..."></div>
+      <div class="form-row">
+        <div class="upload-zone"><input type="file" onchange="if(this.files[0]&&!document.getElementById('uls-name').value)document.getElementById('uls-name').value=this.files[0].name.replace(/\.[^.]+$/,'')">
+        <i class="ti ti-cloud-upload"></i><p>PDF, Word, Imagen</p></div>
+        <div class="prog-wrap" id="uls-prog"><span style="font-size:11px;color:var(--b800)">Entregando...</span><div class="prog-bar"><div class="prog-fill" id="uls-fill"></div></div></div>
+      </div>
+      <input type="hidden" id="uls-cid"><input type="hidden" id="uls-sid">
+      <div class="modal-actions">
+        <button class="btn-sm" onclick="closeModal('upload-stu')">Cancelar</button>
+        <button class="btn-sm btn-blue" onclick="submitStudentWork()"><i class="ti ti-send"></i>Entregar</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-bg" id="modal-addUser">
+    <div class="modal">
+      <h2><i class="ti ti-user-plus" style="color:var(--b400)"></i>Agregar alumno</h2>
+      <div class="form-row"><label>Nombre completo</label><input id="au-name" placeholder="Nombre del alumno"></div>
+      <div class="form-row"><label>Correo</label><input id="au-email" placeholder="alumno@utp.ac.pa"></div>
+      <div class="form-row"><label>Contraseña inicial</label><input id="au-pass" type="password" placeholder="••••••••"></div>
+      <div class="modal-actions">
+        <button class="btn-sm" onclick="closeModal('addUser')">Cancelar</button>
+        <button class="btn-sm btn-blue" onclick="addUser()"><i class="ti ti-check"></i>Crear cuenta</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"><i class="ti ti-circle-check"></i><span id="toast-msg"></span></div>
+</div>
+</div>
+
+<script>
+const ICONS={fis:'⚛',cal:'📐',dla:'💻',qui:'🧪',gen:'📚',};
+const CBADGE={fis:'cb-fis',cal:'cb-cal',dla:'cb-dla',qui:'cb-qui',gen:'cb-fis'};
+const FICONS={pdf:'ti-file-type-pdf fi-pdf',doc:'ti-file-type-doc fi-doc',img:'ti-photo fi-img',vid:'ti-video fi-vid',link:'ti-link fi-link'};
+const FLABELS={pdf:'PDF',doc:'Word',img:'Imagen',vid:'Video',link:'Enlace'};
+
+const DB={
+  users:[
+    {id:1,name:'Jepherson David Zambrano Cab',email:'david@UTP.pa',pass:'docente1',role:'docente'},
+    {id:1,name:'Isa',email:'Isa@UTP.pa',pass:'docente2',role:'docente'},
+    {id:2,name:'Daniel Gonzales',email:'dann@UTP.pa',pass:'alumno1',role:'alumno'},
+    {id:3,name:'Carlos Pérez',email:'carlos@UTP.pa',pass:'alumno2',role:'alumno'},
+    {id:4,name:'Paola Lopez',email:'pao@UTP.pa',pass:'alumno3',role:'alumno'},
+
+  ],
+  courses:[
+    {id:1,name:'Física I',desc:'Mecánica clásica y electromagnetismo',icon:'fis',sessions:[
+      {id:1,name:'Sesión 1: Cinemática',desc:'Movimiento rectilíneo y vectores',due:'2026-07-05',docFiles:[
+        {id:1,name:'Guía de Cinemática',type:'pdf'},
+        {id:2,name:'Formulario MRU y MRUA',type:'pdf'},
+        {id:3,name:'Video: Vectores de posición',type:'vid'}
+      ],submissions:[
+        {userId:2,name:'María González',file:'Tarea_Cinematica_Maria.pdf',date:'2026-07-03'},
+        {userId:3,name:'Carlos Pérez',file:'Tarea_Cinematica_Carlos.docx',date:'2026-07-04'}
+      ]},
+      {id:2,name:'Sesión 2: Dinámica',desc:'Leyes de Newton',due:'2026-07-14',docFiles:[{id:4,name:'Leyes de Newton - Notas',type:'pdf'}],submissions:[]},
+      {id:3,name:'Sesión 3: Energía y trabajo',desc:'Conservación de energía',due:'2026-07-21',docFiles:[],submissions:[]}
+    ]},
+    {id:2,name:'Cálculo I',desc:'Límites, derivadas e integrales',icon:'cal',sessions:[
+      {id:4,name:'Sesión 1: Límites',desc:'Concepto de límite y continuidad',due:'2026-07-06',docFiles:[
+        {id:5,name:'Guía de Límites',type:'pdf'},
+        {id:6,name:'Ejercicios Resueltos',type:'doc'}
+      ],submissions:[
+        {userId:2,name:'María González',file:'Limites_Maria.pdf',date:'2026-07-05'},
+        {userId:4,name:'Ana López',file:'Tarea_Limites_Ana.pdf',date:'2026-07-05'}
+      ]},
+      {id:5,name:'Sesión 2: Derivadas',desc:'Reglas de derivación',due:'2026-07-13',docFiles:[{id:7,name:'Tabla de derivadas',type:'img'}],submissions:[]},
+      {id:6,name:'Sesión 3: Integrales',desc:'Integración por sustitución',due:'2026-07-20',docFiles:[],submissions:[]}
+    ]},
+    {id:3,name:'Desarrollo Lógico y Algoritmos',desc:'Pensamiento computacional y pseudocódigo',icon:'dla',sessions:[
+      {id:7,name:'Sesión 1: Algoritmos',desc:'Concepto y representación de algoritmos',due:'2026-07-07',docFiles:[
+        {id:8,name:'Introducción a Algoritmos',type:'pdf'},
+        {id:9,name:'Diagramas de flujo',type:'img'}
+      ],submissions:[
+        {userId:3,name:'Carlos Pérez',file:'Algoritmos_Carlos.pdf',date:'2026-07-06'},
+        {userId:5,name:'Luis Méndez',file:'Tarea_Algoritmos_Luis.docx',date:'2026-07-07'}
+      ]},
+      {id:8,name:'Sesión 2: Pseudocódigo',desc:'Estructuras de control y pseudocódigo',due:'2026-07-14',docFiles:[{id:10,name:'Guía de Pseudocódigo',type:'pdf'}],submissions:[]},
+      {id:9,name:'Sesión 3: Arreglos y funciones',desc:'Estructuras de datos básicas',due:'2026-07-21',docFiles:[],submissions:[]}
+    ]},
+    {id:4,name:'Química',desc:'Química general e inorgánica',icon:'qui',sessions:[
+      {id:10,name:'Sesión 1: Materia y energía',desc:'Propiedades de la materia',due:'2026-07-08',docFiles:[
+        {id:11,name:'Tabla Periódica',type:'img'},
+        {id:12,name:'Apuntes Materia y Energía',type:'pdf'}
+      ],submissions:[{userId:4,name:'Ana López',file:'Materia_Ana.pdf',date:'2026-07-07'}]},
+      {id:11,name:'Sesión 2: Enlace químico',desc:'Tipos de enlaces y moléculas',due:'2026-07-15',docFiles:[],submissions:[]},
+      {id:12,name:'Sesión 3: Reacciones químicas',desc:'Tipos y balanceo de reacciones',due:'2026-07-22',docFiles:[],submissions:[]}
+    ]}
+  ],
+  nextUserId:6,nextCourseId:5,nextSessionId:13,nextFileId:13
+};
+
+let currentUser=null,loginRole='docente';
+
+function setRole(r){loginRole=r;document.getElementById('tab-doc').classList.toggle('active',r==='docente');document.getElementById('tab-stu').classList.toggle('active',r==='alumno');renderHint();}
+function renderHint(){document.getElementById('hint-content').innerHTML=DB.users.filter(u=>u.role===loginRole).map(u=>`<div>${u.email} / ${u.pass}</div>`).join('');}
+function doLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  const pass=document.getElementById('li-pass').value;
+  const err=document.getElementById('login-err');
+  const u=DB.users.find(u=>u.email===email&&u.pass===pass&&u.role===loginRole);
+  if(!u){err.textContent='Credenciales incorrectas o rol equivocado.';return;}
+  err.textContent='';currentUser=u;
+  document.getElementById('scr-login').classList.remove('active');
+  document.getElementById('scr-app').classList.add('active');
+  initApp();
+}
+function logout(){
+  currentUser=null;
+  document.getElementById('scr-app').classList.remove('active');
+  document.getElementById('scr-login').classList.add('active');
+  document.getElementById('li-email').value='';
+  document.getElementById('li-pass').value='';
+  document.getElementById('login-err').textContent='';
+}
+function initApp(){
+  const isDoc=currentUser.role==='docente';
+  const initials=currentUser.name.split(' ').slice(0,2).map(n=>n[0]).join('');
+  document.getElementById('top-av').className='av '+(isDoc?'av-doc':'av-stu');
+  document.getElementById('top-av').textContent=initials;
+  document.getElementById('top-name').textContent=currentUser.name.split(' ')[0];
+  document.getElementById('top-badge').className='badge-role '+(isDoc?'badge-doc':'badge-stu');
+  document.getElementById('top-badge').textContent=isDoc?'Docente':'Alumno';
+  document.querySelectorAll('.doc-only').forEach(el=>el.style.display=isDoc?'':'none');
+  document.getElementById('nav-tasks-label').textContent=isDoc?'Sesiones':'Mis tareas';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('nav-dashboard').classList.add('active');
+  document.getElementById('page-dashboard').classList.add('active');
+  renderSidebarCourses();renderDashboard();
+}
+function renderSidebarCourses(){
+  document.getElementById('sidebar-courses').innerHTML=DB.courses.map(c=>`
+    <div class="nav-item nav-course" onclick="showPage('courses',document.getElementById('nav-courses'));setTimeout(()=>toggleCard('cb-${c.id}','chev-${c.id}'),80)">
+      <span style="font-size:14px">${ICONS[c.icon]}</span>${c.name}
+    </div>`).join('');
+}
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  if(id==='courses')renderCourses();
+  else if(id==='tasks')renderTasks();
+  else if(id==='users')renderUsers();
+  else if(id==='submissions')renderSubmissions();
+}
+function renderDashboard(){
+  const isDoc=currentUser.role==='docente';
+  document.getElementById('dash-greeting').textContent='Hola, '+currentUser.name.split(' ')[0];
+  document.getElementById('dash-sub').textContent=isDoc?'Panel del docente — Universidad Tecnológica de Panamá':'Panel del estudiante — tus cursos y entregas';
+  const totalFiles=DB.courses.reduce((s,c)=>s+c.sessions.reduce((ss,se)=>ss+se.docFiles.length,0),0);
+  const totalSubs=DB.courses.reduce((s,c)=>s+c.sessions.reduce((ss,se)=>ss+se.submissions.length,0),0);
+  const mySubs=DB.courses.reduce((s,c)=>s+c.sessions.reduce((ss,se)=>ss+se.submissions.filter(sb=>sb.userId===currentUser.id).length,0),0);
+  const totalSess=DB.courses.reduce((s,c)=>s+c.sessions.length,0);
+  const pending=totalSess-DB.courses.reduce((s,c)=>s+c.sessions.filter(se=>se.submissions.find(sb=>sb.userId===currentUser.id)).length,0);
+  if(isDoc){
+    document.getElementById('dash-stats').innerHTML=`
+      <div class="stat-card"><i class="ti ti-book"></i><div class="sl">Cursos</div><div class="sv">${DB.courses.length}</div></div>
+      <div class="stat-card"><i class="ti ti-notes"></i><div class="sl">Sesiones</div><div class="sv">${totalSess}</div></div>
+      <div class="stat-card"><i class="ti ti-files"></i><div class="sl">Materiales</div><div class="sv">${totalFiles}</div></div>
+      <div class="stat-card"><i class="ti ti-inbox"></i><div class="sl">Entregas</div><div class="sv">${totalSubs}</div></div>
+      <div class="stat-card"><i class="ti ti-users"></i><div class="sl">Alumnos</div><div class="sv">${DB.users.filter(u=>u.role==='alumno').length}</div></div>`;
+  }else{
+    document.getElementById('dash-stats').innerHTML=`
+      <div class="stat-card"><i class="ti ti-book"></i><div class="sl">Cursos</div><div class="sv">${DB.courses.length}</div></div>
+      <div class="stat-card"><i class="ti ti-send"></i><div class="sl">Mis entregas</div><div class="sv">${mySubs}</div></div>
+      <div class="stat-card"><i class="ti ti-clock"></i><div class="sl">Pendientes</div><div class="sv">${pending}</div></div>`;
+  }
+  const acts=isDoc?['Material subido en Física I — Sesión 1','Carlos Pérez entregó tarea en Desarrollo Lógico','Ana López entregó en Cálculo I — Límites','Nueva sesión creada en Química']:['Material disponible en Física I — Cinemática','Tu entrega fue recibida en Cálculo I','Nueva sesión: Dinámica en Física I','Fecha límite pronto: DLA — Pseudocódigo'];
+  const times=['Hace 1h','Hace 2h','Hace 4h','Ayer'];
+  document.getElementById('dash-activity').innerHTML=acts.map((a,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px">
+      <div style="width:7px;height:7px;border-radius:50%;background:var(--b400);flex-shrink:0"></div>
+      <span>${a}</span>
+      <span style="margin-left:auto;font-size:11px;color:var(--color-text-secondary);white-space:nowrap">${times[i]}</span>
+    </div>`).join('');
+}
+function renderCourses(){
+  const isDoc=currentUser.role==='docente';
+  document.getElementById('courses-sub').textContent=isDoc?'Gestiona materiales, sesiones y fechas de entrega':'Consulta el material de cada sesión y entrega tus tareas';
+  document.getElementById('doc-add-course-btn').innerHTML=isDoc?`<button class="btn-sm btn-blue" onclick="openModal('addCourse')"><i class="ti ti-plus"></i>Nuevo curso</button>`:'';
+  document.getElementById('courses-list').innerHTML=DB.courses.map(c=>courseHTML(c,isDoc)).join('');
+}
+function courseHTML(c,isDoc){
+  const totalSubs=c.sessions.reduce((s,se)=>s+se.submissions.length,0);
+  const totalFiles=c.sessions.reduce((s,se)=>s+se.docFiles.length,0);
+  return`<div class="card" id="cc-${c.id}">
+    <div class="card-hdr" onclick="toggleCard('cb-${c.id}','chev-${c.id}')">
+      <div class="course-badge ${CBADGE[c.icon]||'cb-fis'}">${ICONS[c.icon]||'📚'}</div>
+      <div><div class="card-title">${c.name}</div><div class="card-sub">${c.desc} · ${c.sessions.length} sesiones · ${totalFiles} materiales${isDoc?' · '+totalSubs+' entregas':''}</div></div>
+      <i class="ti ti-chevron-down chevron" id="chev-${c.id}"></i>
+    </div>
+    <div class="card-body" id="cb-${c.id}">
+      ${c.sessions.map((s,i)=>sessionHTML(c.id,s,i+1,isDoc)).join('')}
+      ${isDoc?`<div style="margin-top:8px;display:flex;gap:8px">
+        <button class="btn-sm btn-blue" onclick="openAddSession(${c.id})" style="font-size:11px"><i class="ti ti-plus"></i>Nueva sesión</button>
+        <button class="btn-sm btn-danger" onclick="delCourse(${c.id})" style="font-size:11px"><i class="ti ti-trash"></i>Eliminar curso</button>
+      </div>`:''}
+    </div>
+  </div>`;
+}
+function sessionHTML(cid,s,num,isDoc){
+  const mySubmission=s.submissions.find(sb=>sb.userId===currentUser.id);
+  const isOverdue=s.due&&new Date(s.due)<new Date()&&!mySubmission;
+  return`<div class="session-row">
+    <div class="sess-hdr" onclick="toggleCard('ssc-${cid}-${s.id}','ssch-${cid}-${s.id}')">
+      <div class="sess-num">${num}</div>
+      <div style="flex:1">
+        <div class="sess-title">${s.name}</div>
+        ${s.desc?`<div style="font-size:10px;color:var(--color-text-secondary);margin-top:1px">${s.desc}</div>`:''}
+        ${s.due?`<div style="font-size:10px;color:var(--color-text-secondary);margin-top:1px"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px"></i> Entrega: ${s.due}${isOverdue?' · <span style="color:var(--r600)">Vencida</span>':''}</div>`:''}
+      </div>
+      ${!isDoc&&mySubmission?`<span class="done-tag" style="margin-right:6px"><i class="ti ti-check" style="font-size:10px"></i> Entregada</span>`:''}
+      ${!isDoc&&!mySubmission&&isOverdue?`<span class="pending-tag" style="margin-right:6px">Vencida</span>`:''}
+      ${isDoc?`<span style="font-size:10px;background:var(--g50);color:var(--g800);padding:2px 8px;border-radius:20px;margin-right:6px">${s.submissions.length} entregas</span>`:''}
+      <i class="ti ti-chevron-down chevron" id="ssch-${cid}-${s.id}"></i>
+    </div>
+    <div class="sess-body" id="ssc-${cid}-${s.id}">
+      ${isDoc&&s.due?`<div class="deadline-box"><i class="ti ti-calendar-event"></i><span class="dl-text">Fecha de entrega:</span><input type="date" value="${s.due}" onchange="updateDue(${cid},${s.id},this.value)"></div>`:''}
+      <div style="font-size:12px;font-weight:500;color:var(--b800);margin-bottom:6px"><i class="ti ti-files" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Material del docente</div>
+      <div class="files-grid" id="dfiles-${cid}-${s.id}">
+        ${s.docFiles.length?s.docFiles.map(f=>`<div class="file-card"><i class="ti ${FICONS[f.type]}"></i><div class="fn">${f.name}</div><div class="ft">${FLABELS[f.type]}</div></div>`).join(''):'<span style="font-size:11px;color:var(--color-text-secondary);font-style:italic;grid-column:1/-1">Sin material aún.</span>'}
+      </div>
+      ${isDoc?`<div style="display:flex;gap:6px;margin-bottom:12px">
+        <button class="btn-sm btn-blue" style="font-size:11px" onclick="openDocUpload(${cid},${s.id})"><i class="ti ti-upload"></i>Subir material</button>
+        <button class="btn-sm btn-danger" style="font-size:11px" onclick="delSession(${cid},${s.id})"><i class="ti ti-trash"></i>Eliminar sesión</button>
+      </div>`:''}
+      ${isDoc?submissionsBlock(s):''}
+      ${!isDoc?studentDeliverBlock(cid,s,mySubmission):''}
+    </div>
+  </div>`;
+}
+function submissionsBlock(s){
+  if(!s.submissions.length)return`<div style="font-size:11px;color:var(--color-text-secondary);font-style:italic;padding:4px 0">Sin entregas aún.</div>`;
+  return`<div class="student-uploads">
+    <h4><i class="ti ti-inbox" style="font-size:14px;color:var(--g600)"></i>Entregas recibidas (${s.submissions.length})</h4>
+    ${s.submissions.map(sb=>`<div class="sub-row">
+      <div class="sub-av">${sb.name.split(' ')[0][0]}${sb.name.split(' ')[1]?.[0]||''}</div>
+      <span style="font-weight:500">${sb.name}</span>
+      <i class="ti ti-file" style="font-size:13px;color:var(--b400);margin-left:6px"></i>
+      <span style="font-size:11px;color:var(--color-text-secondary)">${sb.file}</span>
+      <span class="sub-date">${sb.date}</span>
+      <span class="sub-badge"><i class="ti ti-check" style="font-size:10px"></i> Recibido</span>
+    </div>`).join('')}
+  </div>`;
+}
+function studentDeliverBlock(cid,s,mySubmission){
+  if(mySubmission)return`<div style="background:var(--g50);border:0.5px solid var(--g100);border-radius:var(--border-radius-md);padding:10px 12px;font-size:13px;color:var(--g800)">
+    <i class="ti ti-circle-check" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>
+    Entregaste: <strong>${mySubmission.file}</strong> — ${mySubmission.date}
+  </div>`;
+  return`<div style="background:var(--b50);border:0.5px solid var(--b100);border-radius:var(--border-radius-md);padding:10px 12px">
+    <div style="font-size:12px;font-weight:500;color:var(--b800);margin-bottom:8px"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Entregar mi tarea</div>
+    <button class="btn-sm btn-blue" style="font-size:11px" onclick="openStudentUpload(${cid},${s.id})"><i class="ti ti-upload"></i>Subir trabajo</button>
+  </div>`;
+}
+function renderTasks(){
+  const isDoc=currentUser.role==='docente';
+  document.getElementById('tasks-title').textContent=isDoc?'Gestión de sesiones':'Mis tareas';
+  document.getElementById('tasks-sub').textContent=isDoc?'Resumen de sesiones, materiales y entregas por curso':'Estado de todas tus entregas';
+  let html='';
+  DB.courses.forEach(c=>{
+    html+=`<div style="display:flex;align-items:center;gap:8px;margin:14px 0 6px"><span style="font-size:18px">${ICONS[c.icon]}</span><span style="font-size:14px;font-weight:500;color:var(--b800)">${c.name}</span></div>`;
+    c.sessions.forEach((s,i)=>{
+      const mine=s.submissions.find(sb=>sb.userId===currentUser.id);
+      const over=s.due&&new Date(s.due)<new Date();
+      html+=`<div class="card" style="padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+        <div class="sess-num">${i+1}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--b800)">${s.name}</div><div style="font-size:11px;color:var(--color-text-secondary)">${s.due?'Entrega: '+s.due:'Sin fecha asignada'}</div></div>
+        ${isDoc?`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--b50);color:var(--b800)">${s.docFiles.length} materiales</span><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--g50);color:var(--g800)">${s.submissions.length} entregas</span>`:mine?`<span class="done-tag"><i class="ti ti-check" style="font-size:10px"></i> Entregada</span>`:over?`<span class="pending-tag" style="background:var(--r50);color:var(--r600)">Vencida</span>`:`<span class="pending-tag">Pendiente</span>`}
+      </div>`;
+    });
+  });
+  document.getElementById('tasks-content').innerHTML=html;
+}
+function renderUsers(){
+  const students=DB.users.filter(u=>u.role==='alumno');
+  document.getElementById('users-table').innerHTML=`
+    <thead><tr><th>Alumno</th><th>Correo</th><th>Entregas totales</th><th></th></tr></thead>
+    <tbody>${students.map(u=>{
+      const subs=DB.courses.reduce((s,c)=>s+c.sessions.reduce((ss,se)=>ss+se.submissions.filter(sb=>sb.userId===u.id).length,0),0);
+      return`<tr>
+        <td><div style="display:flex;align-items:center;gap:8px"><div class="av av-stu" style="width:28px;height:28px;font-size:11px">${u.name.split(' ').slice(0,2).map(n=>n[0]).join('')}</div>${u.name}</div></td>
+        <td style="color:var(--color-text-secondary)">${u.email}</td>
+        <td><span class="sub-badge" style="font-size:11px">${subs} entrega${subs!==1?'s':''}</span></td>
+        <td><button class="btn-sm btn-danger" style="font-size:11px" onclick="delUser(${u.id})"><i class="ti ti-trash"></i></button></td>
+      </tr>`;}).join('')}
+    </tbody>`;
+}
+function renderSubmissions(){
+  let html='';
+  DB.courses.forEach(c=>{
+    const hasSubs=c.sessions.some(s=>s.submissions.length>0);
+    if(!hasSubs)return;
+    html+=`<div style="font-size:14px;font-weight:500;color:var(--b800);margin:12px 0 6px;display:flex;align-items:center;gap:8px"><span>${ICONS[c.icon]}</span>${c.name}</div>`;
+    c.sessions.forEach(s=>{
+      if(!s.submissions.length)return;
+      html+=`<div class="card" style="margin-bottom:10px"><div style="font-size:13px;font-weight:500;color:var(--b800);margin-bottom:8px">${s.name}</div>
+        ${s.submissions.map(sb=>`<div class="sub-row">
+          <div class="sub-av">${sb.name.split(' ')[0][0]}${sb.name.split(' ')[1]?.[0]||''}</div>
+          <span style="font-weight:500">${sb.name}</span>
+          <i class="ti ti-file" style="font-size:13px;color:var(--b400);margin-left:8px"></i>
+          <span style="font-size:12px;color:var(--color-text-secondary)">${sb.file}</span>
+          <span class="sub-date">${sb.date}</span>
+          <span class="sub-badge"><i class="ti ti-check" style="font-size:10px"></i> Recibido</span>
+        </div>`).join('')}
+      </div>`;
+    });
+  });
+  document.getElementById('all-submissions').innerHTML=html||'<p style="color:var(--color-text-secondary);font-size:13px">Sin entregas registradas.</p>';
+}
+function toggleCard(bId,cId){const b=document.getElementById(bId),c=document.getElementById(cId);if(!b)return;const o=b.classList.toggle('open');if(c)c.classList.toggle('open',o);}
+function openModal(id){document.getElementById('modal-'+id).classList.add('open')}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open')}
+function addCourse(){
+  const name=document.getElementById('nc-name').value.trim();if(!name)return;
+  const icon=document.getElementById('nc-icon').value;
+  DB.courses.push({id:DB.nextCourseId++,name,desc:document.getElementById('nc-desc').value||'Sin descripción',icon,sessions:[]});
+  closeModal('addCourse');document.getElementById('nc-name').value='';document.getElementById('nc-desc').value='';
+  renderCourses();renderSidebarCourses();renderDashboard();showToast('Curso creado');
+}
+function delCourse(id){if(!confirm('¿Eliminar este curso y todo su contenido?'))return;DB.courses=DB.courses.filter(c=>c.id!==id);renderCourses();renderSidebarCourses();renderDashboard();showToast('Curso eliminado');}
+function openAddSession(cid){document.getElementById('ns-cid').value=cid;document.getElementById('ns-name').value='';document.getElementById('ns-desc').value='';document.getElementById('ns-due').value='';openModal('addSession');}
+function addSession(){
+  const name=document.getElementById('ns-name').value.trim();if(!name)return;
+  const cid=parseInt(document.getElementById('ns-cid').value);
+  const c=DB.courses.find(x=>x.id===cid);if(!c)return;
+  c.sessions.push({id:DB.nextSessionId++,name,desc:document.getElementById('ns-desc').value,due:document.getElementById('ns-due').value,docFiles:[],submissions:[]});
+  closeModal('addSession');renderCourses();renderDashboard();showToast('Sesión creada');
+}
+function delSession(cid,sid){if(!confirm('¿Eliminar esta sesión?'))return;const c=DB.courses.find(x=>x.id===cid);if(c)c.sessions=c.sessions.filter(s=>s.id!==sid);renderCourses();}
+function updateDue(cid,sid,val){const c=DB.courses.find(x=>x.id===cid);const s=c&&c.sessions.find(x=>x.id===sid);if(s){s.due=val;showToast('Fecha de entrega actualizada');}}
+function openDocUpload(cid,sid){document.getElementById('uld-cid').value=cid;document.getElementById('uld-sid').value=sid;document.getElementById('uld-name').value='';document.getElementById('uld-prog').style.display='none';document.getElementById('uld-fill').style.width='0%';openModal('upload-doc');}
+function uploadDocMaterial(){
+  const name=document.getElementById('uld-name').value.trim();if(!name){alert('Ingresa un nombre');return;}
+  const type=document.getElementById('uld-type').value;
+  const prog=document.getElementById('uld-prog'),fill=document.getElementById('uld-fill');
+  prog.style.display='block';let p=0;
+  const t=setInterval(()=>{p+=Math.random()*30+15;if(p>=100){p=100;clearInterval(t);
+    const cid=parseInt(document.getElementById('uld-cid').value);
+    const sid=parseInt(document.getElementById('uld-sid').value);
+    const c=DB.courses.find(x=>x.id===cid);const s=c&&c.sessions.find(x=>x.id===sid);
+    if(s){s.docFiles.push({id:DB.nextFileId++,name,type});
+      const el=document.getElementById(`dfiles-${cid}-${sid}`);
+      if(el){const empty=el.querySelector('span[style*="italic"]');if(empty)el.innerHTML='';
+        el.insertAdjacentHTML('beforeend',`<div class="file-card"><i class="ti ${FICONS[type]}"></i><div class="fn">${name}</div><div class="ft">${FLABELS[type]}</div></div>`);}
+    }
+    closeModal('upload-doc');prog.style.display='none';fill.style.width='0%';renderDashboard();showToast('Material subido correctamente');
+  }fill.style.width=Math.min(p,100)+'%';},180);
+}
+function openStudentUpload(cid,sid){document.getElementById('uls-cid').value=cid;document.getElementById('uls-sid').value=sid;document.getElementById('uls-name').value='';document.getElementById('uls-prog').style.display='none';document.getElementById('uls-fill').style.width='0%';openModal('upload-stu');}
+function submitStudentWork(){
+  const name=document.getElementById('uls-name').value.trim();if(!name){alert('Ingresa un nombre');return;}
+  const prog=document.getElementById('uls-prog'),fill=document.getElementById('uls-fill');
+  prog.style.display='block';let p=0;
+  const t=setInterval(()=>{p+=Math.random()*30+15;if(p>=100){p=100;clearInterval(t);
+    const cid=parseInt(document.getElementById('uls-cid').value);
+    const sid=parseInt(document.getElementById('uls-sid').value);
+    const c=DB.courses.find(x=>x.id===cid);const s=c&&c.sessions.find(x=>x.id===sid);
+    if(s)s.submissions.push({userId:currentUser.id,name:currentUser.name,file:name,date:new Date().toISOString().split('T')[0]});
+    closeModal('upload-stu');prog.style.display='none';fill.style.width='0%';renderCourses();renderDashboard();showToast('Tarea entregada exitosamente');
+  }fill.style.width=Math.min(p,100)+'%';},180);
+}
+function addUser(){
+  const name=document.getElementById('au-name').value.trim();
+  const email=document.getElementById('au-email').value.trim();
+  const pass=document.getElementById('au-pass').value;
+  if(!name||!email||!pass){alert('Completa todos los campos');return;}
+  if(DB.users.find(u=>u.email===email)){alert('Ese correo ya existe');return;}
+  DB.users.push({id:DB.nextUserId++,name,email,pass,role:'alumno'});
+  closeModal('addUser');renderUsers();renderDashboard();showToast('Alumno registrado correctamente');
+}
+function delUser(id){if(!confirm('¿Eliminar este alumno?'))return;DB.users=DB.users.filter(u=>u.id!==id);renderUsers();renderDashboard();}
+let toastT;
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
+renderHint();
+document.querySelectorAll('.modal-bg').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o){const id=o.id.replace('modal-','');closeModal(id);}});});
+</script>
+</body>
+</html>

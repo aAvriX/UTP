@@ -246,8 +246,8 @@
         <span style="font-size:15px;font-weight:500;color:var(--adm800)">Acceso Administrador</span>
         <button onclick="closeAdminLogin()" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:18px;color:var(--color-text-secondary)"><i class="ti ti-x"></i></button>
       </div>
-      <div class="form-row"><label>Correo</label><input type="email" id="adm-gate-email" placeholder="admin@utp.pa" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
-      <div class="form-row"><label>Contraseña</label><input type="password" id="adm-gate-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+      <div class="form-row"><label>Correo</label><input type="email" id="adm-gate-email" placeholder="admin@utp.pa" autocomplete="off" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+<div class="form-row"><label>Contraseña</label><input type="password" id="adm-gate-pass" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
       <div class="err-msg" id="adm-gate-err" style="margin-bottom:8px"></div>
       <button class="btn-full" style="background:var(--adm600);margin-top:0" onclick="doAdminLogin()"><i class="ti ti-shield-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i>Ingresar como Admin</button>
     </div>
@@ -262,8 +262,8 @@
         <div class="role-tab active" id="tab-doc" onclick="setRole('docente')"><i class="ti ti-chalkboard" style="font-size:13px;vertical-align:-2px;margin-right:3px"></i>Docente</div>
         <div class="role-tab" id="tab-stu" onclick="setRole('alumno')"><i class="ti ti-user-graduate" style="font-size:13px;vertical-align:-2px;margin-right:3px"></i>Alumno</div>
       </div>
-      <div class="form-row"><label>Correo electrónico</label><input type="email" id="li-email" placeholder="correo@utp.pa" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <div class="form-row"><label>Contraseña</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+     <div class="form-row"><label>Correo electrónico</label><input type="email" id="li-email" placeholder="correo@utp.pa" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()"></div>
+<div class="form-row"><label>Contraseña</label><input type="password" id="li-pass" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="btn-full" onclick="doLogin()">Ingresar</button>
       <div class="err-msg" id="login-err"></div>
       <div class="login-hint"><strong>Cuentas de prueba:</strong><div id="hint-content"></div></div>

@@ -2910,7 +2910,7 @@ setTimeout(()=>{
   renderCourses();
   renderDashboard();
   showToast('✅ Tarea entregada exitosamente');
-  alert('✅ ¡Tarea entregada exitosamente!\n\nTu archivo fue recibido por el docente.\nPuedes verificarlo en "Mis tareas".');
+  alert('✅ ¡Tarea entregada exitosamente!');
 },400);
 }
 
@@ -3242,6 +3242,26 @@ function openModal(id){document.getElementById('modal-'+id).classList.add('open'
 function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
 let toastT;
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
+function showSuccessToast(msg){
+  const t=document.getElementById('toast');
+  const m=document.getElementById('toast-msg');
+  m.textContent=msg;
+  t.style.background='var(--g600)';
+  t.style.fontSize='13px';
+  t.style.padding='12px 18px';
+  t.style.borderRadius='10px';
+  t.style.boxShadow='0 4px 16px rgba(0,0,0,0.18)';
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>{
+    t.classList.remove('show');
+    t.style.background='';
+    t.style.fontSize='';
+    t.style.padding='';
+    t.style.borderRadius='';
+    t.style.boxShadow='';
+  },4500);
+}
 
 // Inicializar
 renderHint();

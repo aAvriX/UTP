@@ -863,7 +863,7 @@ async function doAdminLogin(){
   .eq('email', email)
   .eq('password', pass)
   .eq('role', 'admin')   // ← agregar esto
-  .single();
+  .maybeSingle();
 
 
   if(error || !data){

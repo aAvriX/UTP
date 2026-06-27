@@ -2874,13 +2874,8 @@ if(ya){
 
   // Subir a Supabase Storage
   const ext=file.name.split('.').pop();
- const path=`submissions/${sid}/${currentUser.id}_${Date.now()}_${file.name}`;
-  const {error:storageError}=await supabaseClient.storage
-    .from('UTPData')
-    .upload(path,file,{cacheControl:'3600',upsert:false});
-
-  if(storageError){
-    prog.style.display='none';fill.style.width='0%';
+ const safeName=file.name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9._-]/g,"_");
+const path=`submissions/${sid}/${currentUser.id}_${Date.now()}_${safeName}`;splay='none';fill.style.width='0%';
     alert('Error al subir archivo: '+storageError.message);return;
   }
 

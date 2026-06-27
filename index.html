@@ -2905,7 +2905,7 @@ setTimeout(()=>{
   renderCourses();
   renderDashboard();
   showSuccessToast('✅ ¡Tarea entregada exitosamente! Puedes verla en "Mis tareas".');
-},400);
+},5000);
 }
 
 async function joinCourseByCode(){
@@ -3235,8 +3235,8 @@ function toggleCard(bId,cId){const b=document.getElementById(bId),c=document.get
 function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
 function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
 let toastT;
-function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
-function showSuccessToast(msg){
+function showToast(msg,duration=2800){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),duration);}
+  function showSuccessToast(msg){
   const t=document.getElementById('toast');
   const m=document.getElementById('toast-msg');
   m.textContent=msg;

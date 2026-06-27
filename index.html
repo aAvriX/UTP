@@ -2898,16 +2898,20 @@ if(ya){
   submitted_at:new Date().toISOString()
 }]);
   fill.style.width='100%';
-  setTimeout(()=>{
-    closeModal('upload-stu');prog.style.display='none';fill.style.width='0%';
-    showToast('✅ ¡Tarea entregada correctamente! Ya puede cerrar esta ventana.');
-   if(error){
-  console.error("ERROR SUBMISSIONS:", error);
-  alert('Error al registrar entrega: '+error.message);
-  return;
-}
-    renderCourses();renderDashboard();showToast('Tarea entregada exitosamente');
-  },400);
+setTimeout(()=>{
+  closeModal('upload-stu');
+  prog.style.display='none';
+  fill.style.width='0%';
+  if(error){
+    console.error("ERROR SUBMISSIONS:", error);
+    alert('❌ Error al registrar entrega: '+error.message);
+    return;
+  }
+  renderCourses();
+  renderDashboard();
+  showToast('✅ Tarea entregada exitosamente');
+  alert('✅ ¡Tarea entregada exitosamente!\n\nTu archivo fue recibido por el docente.\nPuedes verificarlo en "Mis tareas".');
+},400);
 }
 
 async function joinCourseByCode(){

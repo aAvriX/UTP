@@ -2900,6 +2900,7 @@ if(ya){
   fill.style.width='100%';
   setTimeout(()=>{
     closeModal('upload-stu');prog.style.display='none';fill.style.width='0%';
+    showToast('✅ ¡Tarea entregada correctamente! Ya puede cerrar esta ventana.');
    if(error){
   console.error("ERROR SUBMISSIONS:", error);
   alert('Error al registrar entrega: '+error.message);
